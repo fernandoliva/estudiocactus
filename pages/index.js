@@ -38,6 +38,37 @@ export default function Home () {
     fetchData();
   }, [flag]);
 
+  //change zindex furnitureBG
+  const changeZindexFurnitures = (e) => {
+    const idThumbnail = e.target.className.split('-')[3];
+    const furnitureBackground = document.getElementsByClassName('furnitureBG');
+    for (let i of furnitureBackground) {
+      if (i.id === idThumbnail) {
+        i.classList.add('z-20');
+        i.classList.remove('z-0');
+      } else {
+        i.classList.add('z-0');
+        i.classList.remove('z-20');
+      }
+    }
+    
+  }
+
+    //change zindex floor
+  const changeZindexFloor = (e) => {
+    const idThumbnail = e.target.className.split('-')[3];
+    const floorBackground = document.getElementsByClassName('floorBG');
+    for (let i of floorBackground) {
+      if (i.id === idThumbnail) {
+        i.classList.add('z-20');
+        i.classList.remove('z-0');
+      } else {
+        i.classList.add('z-0');
+        i.classList.remove('z-20');
+      }
+    }
+  }
+
   return (
     <>
     <div className='flex flex-col items-center justify-center min-h-screen py-2'>
@@ -47,17 +78,45 @@ export default function Home () {
         { furniture.materials && furniture.materials.length > 0 ? 
           furniture.materials.map((material, index) => {
               return (
-                  <img src={material.layer} alt='background' className="absolute w-full md:w-7/12 z-10" key={index}/>
+                <img src={material.layer} alt='background' className={"absolute w-full md:w-7/12 z-0 furnitureBG"} key={index} id={index}/>
               )
             }) : <Loading />
         }
         { floor.materials && floor.materials.length > 0 ? 
           floor.materials.map((material, index) => {
               return (
-                  <img src={material.layer} alt='background' className="absolute w-full md:w-7/12 z-10" key={index}/>
+                <img src={material.layer} alt='background' className={"absolute w-full md:w-7/12 z-0 floorBG"} key={index} id={index}/>
               )
             }) : <Loading />
         }
+      </div>
+      <div className="containerSelectors flex flex-row flex-wrap justify-center w-full md:w-7/12 ">
+        <div className="containerSelectors__furniture flex flex-row">
+          { furniture.materials && furniture.materials.length > 0 ?
+            furniture.materials.map((material, index) => {
+              return (
+                <>
+                <div className="flex flex-row items-center justify-center py-3 w-full md:w-7/12">
+                  <img src={material.thumbnail} alt='background' className={`relative w-20 z-0 furniture-${index}`} key={index} onClick={changeZindexFurnitures} />
+                </div>
+                </>
+              )
+            }) : <Loading />
+          }
+        </div>
+        <div className="containerSelectors__floor flex flex-row">
+          { floor.materials && floor.materials.length > 0 ?
+            floor.materials.map((material, index) => {
+              return (
+                <>
+                <div className="flex flex-row items-center justify-center py-3 w-full md:w-7/12">
+                  <img src={material.thumbnail} alt='background' className={`relative w-20 z-0 floor-${index}`} key={index} onClick={changeZindexFloor} />
+                </div>
+                </>
+              )
+            }) : <Loading />
+          }
+        </div>
       </div>
     </div>
     </>
